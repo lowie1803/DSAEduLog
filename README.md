@@ -1,10 +1,14 @@
 # low_'s DSAEduLog
----
 
-**Newest updates (Jun 6, 22)**:
+
+> **Newest updates (Jun 6, 22)**:
 Main feature/aim will be supporting development of low_'s DSA teaching system. Templates & teaching logs is provided.
 
-> Welcome abroad!
+
+
+***Welcome abroad!***
+
+
 
 Moving from a competitive programmer towards a professional developer/engineer, I faced many challenges.
 One of them is developing my products (runnable programs, educational systems, contests, ...) systematically.
@@ -13,11 +17,11 @@ Through this repo/logs, I hope to develop a more efficient workflow and help sup
 The target is to help reduce manual works, generate educational products faster and save mental energy for actual creative works.
 
 ## Features
----
 
 ### Templates
 
 *Directory*: `./templates`.
+
 Provides templates for products.
 
 **Now available**:
@@ -33,9 +37,12 @@ main correct solution to generate output files, JSON metadata.
 - script to auto-update library files.
 - script to generate README's from metadata JSON.
 
+
+
 ### Logs
 
 *Directory*: `./teaching-logs`.
+
 Log all training contest.
 
 ### DSA Problem Grand Storage (TODO)
