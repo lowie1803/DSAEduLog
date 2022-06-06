@@ -1,0 +1,18 @@
+{
+  "contestTitle": "Sample VJudge Contest",
+  "contestLink": "https://vjudge.net/contest/475532",
+  "groupLink": "none",
+  "platform": "VJudge",
+  "contestStartTimeUnix": 1654473600,
+  "contestDuration": 180,
+  "averageDifficulty": 1300,
+  "problemCount": 1,
+  "problems": {
+    "0": {
+      "origin": "https://codeforces.com/contest/1649/problem/B",
+      "difficulty": 1300,
+      "tags": ["greedy", "implementation"]
+    }
+  },
+  "_comments": "PLEASE PROVIDE METADATA INFORMATION AFTER CREATION"
+}
