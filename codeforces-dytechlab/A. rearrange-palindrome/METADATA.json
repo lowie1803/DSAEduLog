@@ -1,0 +1,13 @@
+{
+  "title": "A Plus B",
+  "shortform": "APLUSB",
+  "input": "stdin",
+  "output": "stdout",
+  "statement": "https://codeforces.com/contest/1649/problem/B",
+  "timeLimit": "1000",
+  "memLimit": "256",
+  "isInteractive": false,
+  "tags": ["implementation"],
+  "owner": "low_",
+  "creationTime": 1654473600
+}

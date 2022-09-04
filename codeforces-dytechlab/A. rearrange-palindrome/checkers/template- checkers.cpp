@@ -1,9 +1,17 @@
-// todo: https://codeforces.com/blog/entry/18431
 #include<bits/stdc++.h>
 #include"testlib.h"
+using namespace std;
 
 int main(int argc, char* argv[]) {
   registerTestlibCmd(argc, argv);
+
+  int testCount = inf.readInt();
+  for (int testNumber = 1; testNumber <= testCount; testNumber++) {
+    // for each test case, we will bruteforce to find longest palindromic substring, but knowing that the answer
+    // will be at least |str| - 25. Hashing with n * log(n) is also possible, but takes time to implement
+
+    string participantAns = ouf.readToken("")
+  }
 /*
   int participantAns = ouf.readInt(-2000, 2000, "sum of numbers");
   int juryAns = ans.readInt();
