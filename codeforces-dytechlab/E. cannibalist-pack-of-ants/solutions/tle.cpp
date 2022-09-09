@@ -20,7 +20,7 @@ using namespace std;
 #define matrix vector <vector <mattype> >
 
 // constants:
-const int mn = 1000005;
+const int mn = 200005;
 const int mod = 1000000007;
 const long long inf = 4444444444444444444;
 const int sminf = 1111111111;
@@ -60,32 +60,65 @@ void preprocess()
 }
 
 // global variables:
-ll n;
-
 ll POW(ll u, ll v) {
   if (v == 0) return 1;
   ll mid = POW(u, v / 2);
   mid = (mid * mid) % mod;
   return (v & 1) ? (mid * u % mod) : mid;
 }
+
+int n;
+
+int last_ant_survive(string str) {
+  str[0] = 'R';
+  str[n - 1] = 'L';
+  vector <int> wei(n, 1);
+  vector <int> ind(n);
+  for (int i = 0; i < n; i++) ind[i] = i + 1;
+  while (str.size() > 1) {
+    // cerr << str << "\n";
+    for (int i = 0; i < str.size() - 1; i++) if (str[i] == 'R' && str[i + 1] == 'L') {
+      if (wei[i] > wei[i+1]) {
+        wei[i] += wei[i + 1];
+        str.erase(str.begin() + i + 1);
+        ind.erase(ind.begin() + i + 1);
+        wei.erase(wei.begin() + i + 1);
+      } else {
+        wei[i+1] += wei[i];
+        str.erase(str.begin() + i);
+        ind.erase(ind.begin() + i);
+        wei.erase(wei.begin() + i);
+      }
+    }
+
+    str[0] = 'R';
+    str[str.size() - 1] = 'L';
+  }
+  return ind[0];
+}
+
+string conv_int_to_binLR(int u) {
+  string ans = "";
+  for (int i = 0; i < n; i++) {
+    ans += (u % 2 == 0 ? 'L' : 'R');
+    u/=2; 
+  }
+  return ans;
+}
+
 // main solution goes here:
 void execute(int test_number)
 {
-  cin>>n;
-
-  if (n == 1) {
-    cout << "1\n";
-    return;
+  cin >> n;
+  vector <int> ans(n + 1);
+  for (int i = 0; i < POW2[n]; i++) {
+    int last_ant = last_ant_survive(conv_int_to_binLR(i));
+    ans[last_ant] ++;
   }
-  vector <ll> ans(n + 1, 0), sufsum(n + 1, 0);
-  sufsum[n] = ans[n] = POW(POW2[(n - 1) / 2], mod - 2);
-  for (int i = n - 1; i > 1; i--) {
-    ans[i] = POW(POW2[(i + 1) / 2], mod - 2);
-    if (2 * i <= n) ans[i] = ans[i] * (1 - sufsum[i * 2] + mod) % mod;
-    sufsum[i] = (sufsum[i + 1] + ans[i]) % mod;
-  }
-  for (int i = 1; i <= n; i++) cout << ans[i] << "\n";
 
+  for (int i = 1; i <= n; i++) {
+    cout << ans[i] * POW(POW2[n], mod - 2) % mod << "\n";
+  }
 }
 // REMEMBER TO CHOOSE TEST METHODS
 // PLEASE REMOVE cout AND cerr DEBUG LINES BEFORE SUBMITTING PROBLEMS
