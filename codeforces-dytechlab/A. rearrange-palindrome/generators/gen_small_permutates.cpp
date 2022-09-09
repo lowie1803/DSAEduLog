@@ -18,24 +18,28 @@ using namespace std;
 
 const int STRING_LEN_LIMIT = 100'000;
 
+string numberToWord(int a, int len, string letterUsed) {
+  string res = "";
+  for (int i = 0; i < len; i++) {
+    res += letterUsed[a % letterUsed.size()];
+    a /= letterUsed.size();
+  }
+  return res;
+}
 
 int main(int argc, char* argv[])
 {
   registerGen(argc, argv, 0);
-  int numberOfTests = atoi(argv[1]);
-  string letterUsed = argv[2];
-  int totalChar = atoi(argv[3]);
+  int numberOfTests = opt<int>("T");
+  string letterUsed = opt<string>("ltrs");
+  int len = opt<int>("len");
+
+  numberOfTests = min(numberOfTests, 200'000 / len);
 
   vector <string> tests;
-  int strlen;
   string str;
-  int remainingChar = totalChar;
   for (int i = numberOfTests; i > 0; i--) {
-    strlen = (i == 1 ? remainingChar : (rnd.wnext(totalChar / numberOfTests / 2, totalChar / numberOfTests * 2, -4)));
-    strlen = min(strlen, STRING_LEN_LIMIT);
-    remainingChar -= strlen;
-    str = "";
-    for (int j = 0; j < strlen; j++) str += rnd.any(letterUsed);
+    str = numberToWord(i, len, letterUsed);
     tests.push_back(str);
   }
 

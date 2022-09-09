@@ -2,7 +2,7 @@
 #include "testlib.h"
 using namespace std;
 
-const int MAXT = 10'000;
+const int MAXT = 100'000;
 const int MAXN = 100'000;
 const long long MAXA = 1'000'000'000'000'000'000;
 

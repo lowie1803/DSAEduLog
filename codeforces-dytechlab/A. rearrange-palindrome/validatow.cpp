@@ -3,7 +3,7 @@
 using namespace std;
 
 const int MAXT = 10'000;
-const int MAXN = 100'000;
+const int MAXN = 200'000;
 const int MAX_TOTAL = 200'000;
 const int MAXA = 1'000'000'000;
 

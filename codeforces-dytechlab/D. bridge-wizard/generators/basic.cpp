@@ -16,8 +16,52 @@ using namespace std;
 /** Extend testlib.h here **/
 /**/
 
-int main(int argc, char* argv[])
-{
-  registerGen(argc, argv, 0);
-  int n = atoi(argv[1]);
+void writeTest(int test, int n, int m, int wLimit) {
+    // startTest(test);
+
+    vector<int> p(n);
+    for (int i = 1; i < n; i++)
+        p[i] = rnd.wnext(i, 2);
+
+    vector<int> perm = rnd.perm(n);
+
+    vector<pair<pair<int, int>, int>> edges;
+    for (int i = 1; i < n; i++)
+        if (rnd.next(2))
+            edges.push_back({make_pair(perm[i], perm[p[i]]), rnd.next(1, wLimit)});
+        else
+            edges.push_back({make_pair(perm[p[i]], perm[i]), rnd.next(1, wLimit)});
+
+    for (int i = n; i <= m; i++) {
+      int u = rnd.wnext(n-1, -1);
+      int v = rnd.next(u+1, n - 1);
+      edges.push_back({make_pair(perm[u], perm[v]), rnd.next(1, wLimit)});
+    }
+
+    shuffle(edges.begin(), edges.end());
+
+    println(n, m);
+    for (auto edge: edges)
+        println(edge.first.first + 1, edge.first.second + 1, edge.second);
+}
+
+int main(int argc, char *argv[]) {
+    registerGen(argc, argv, 1);
+
+    int testCount = opt<int>(1);
+    int nTotal = opt<int>(2);
+    int mTotal = opt<int>(3);
+    int wLimit = opt<int>(4);
+
+    int extraEdges = mTotal - nTotal + testCount;
+
+    cout << testCount << "\n";
+
+    for (int i = 1; i <= testCount; i++) {
+      int n = (i == testCount ? nTotal : rnd.wnext(2, nTotal - (testCount - i) * 2, -2));
+      int m = (i == testCount ? extraEdges : rnd.wnext(extraEdges + 1, -1)) + (n - 1);
+      nTotal -= n;
+      extraEdges -= (m - n + 1);
+      writeTest(i, n, m, wLimit);
+    }
 }

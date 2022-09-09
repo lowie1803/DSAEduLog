@@ -41,32 +41,35 @@ const int N_MIN = 4;
 int main(int argc, char* argv[])
 {
   registerGen(argc, argv, 0);
-  int testCount = atoi(argv[1]);
-  int nMax = atoi(argv[2]);
-  int cornerFreq = atoi(argv[3]); // corners will appear in testCount / argv[3] cases
+  int testCount = opt<int>("T");
+  int n = opt<int>("N");
 
-  cout << testCount << "\n";
-  for (int test = 1; test <= testCount; test++) {
-    int n = rnd.next(N_MIN, nMax);
+  vector <vector <int> > cases;
 
-    int cornerCase = rnd.next(cornerFreq);
-    vector <int> pieces;
-    if (cornerCase == 0) {
-      vector <pair <pair <int, int>, int> > cases = {{{1, 1}, 3}, {{1, n - 1}, 2}, {{n - 1, 1}, 1}, {{n - 1, n - 1}, 0}};
-      pair <pair <int, int>, int> thisCase = rnd.any(cases);
-      pieces = coordinateLPieces(thisCase.first.first, thisCase.first.second, thisCase.second);
-    } else {
-      int x = rnd.next(1, n - 1);
-      int y = rnd.next(1, n - 1);
-      int mode = rnd.next(0, 3);
-      pieces = coordinateLPieces(x, y, mode);
+  for (int i = 1; i < n; i++) {
+    for (int j = 1; j < n; j++) {
+      for (int u = 1; u <= n; u++) {
+        for (int v = 1; v <= n; v++) {
+          for (int mode = 0; mode < 4; mode++) {
+            if (cases.size() >= testCount) continue;
+
+            vector <int> cas = coordinateLPieces(i, j, mode);
+            cas.push_back(u);
+            cas.push_back(v);
+            cases.push_back(cas);
+          }
+        }
+      }
     }
+  }
+  shuffle(cases.begin(), cases.end());
 
-    int u = rnd.next(1, n), v = rnd.next(1, n);
+  cout << cases.size() << "\n";
+  for (auto cas: cases) {
     cout << n << "\n";
-    for (int i = 0; i < pieces.size(); i++) {
-      cout << pieces[i] << (i == pieces.size() - 1 ? "\n" : " ");
+    for (int i = 0; i < 6; i++) {
+      cout << cas[i] << (i == 5 ? "\n" : " ");
     }
-    cout << u << " " << v << "\n";
+    cout << cas[6] << " " << cas[7] << "\n";
   }
 }

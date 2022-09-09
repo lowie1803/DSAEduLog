@@ -1,6 +1,6 @@
 #include "testlib.h"
 
-const int MAXT = 50'000;
+const int MAXT = 1'000;
 const int MAXN = 1'000'000;
 const int MAXA = 1'000'000'000;
 
@@ -8,7 +8,15 @@ const int MAXA = 1'000'000'000;
 
 int main(int argc, char* argv[]) {
   registerValidation(argc, argv);
-  inf.readInt(1, MAXN, "n");
+  int tests = inf.readInt(1, MAXT, "T");
   inf.readEoln();
+  int sumN = 0;
+  for (int test = 1; test <= tests; test++) {
+    setTestCase(test);
+    int n = inf.readInt(1, MAXN, "n");
+    sumN += n;
+    ensuref(sumN <= MAXN, "sum of n exceeded %d", MAXN);
+    inf.readEoln();
+  }
   inf.readEof();
 }

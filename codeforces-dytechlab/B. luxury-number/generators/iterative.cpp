@@ -1,6 +1,7 @@
 #include "testlib.h"
 #include <bits/stdc++.h>
 using namespace std;
+#define ll long long
 
 /*
 *  rnd.next(4) - Random int bw 0-3
@@ -16,30 +17,26 @@ using namespace std;
 /** Extend testlib.h here **/
 /**/
 
-const int STRING_LEN_LIMIT = 100'000;
-
-
 int main(int argc, char* argv[])
 {
   registerGen(argc, argv, 0);
-  int numberOfTests = atoi(argv[1]);
-  string letterUsed = argv[2];
-  int totalChar = atoi(argv[3]);
-
-  vector <string> tests;
-  int strlen;
-  string str;
-  int remainingChar = totalChar;
-  for (int i = numberOfTests; i > 0; i--) {
-    strlen = (i == 1 ? remainingChar : (rnd.wnext(totalChar / numberOfTests / 2, totalChar / numberOfTests * 2, -4)));
-    strlen = min(strlen, STRING_LEN_LIMIT);
-    remainingChar -= strlen;
-    str = "";
-    for (int j = 0; j < strlen; j++) str += rnd.any(letterUsed);
-    tests.push_back(str);
+  int testCount = opt<long long>("T");
+  ll leftMin = opt<long long>("MINL");
+  ll rightMin = opt<long long>("MINR");
+  ll leftMax = opt<long long>("MAXL");
+  ll rightMax = opt<long long>("MAXR");
+  vector <pair <ll, ll> > tests;
+  ll curL = leftMin, curR = rightMin;
+  while (tests.size() < testCount && curL <= leftMax) {
+    tests.push_back({curL, curR});
+    curR++;
+    if (curR > rightMax) {
+      curL++;
+      curR = max(rightMin, curL);
+    }
   }
 
   shuffle(tests.begin(), tests.end());
-  cout << numberOfTests << "\n";
-  for (string s: tests) cout << s << "\n";
+  cout << tests.size() << "\n";
+  for (auto test: tests) cout << test.first << " " << test.second << "\n";
 }

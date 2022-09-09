@@ -24,7 +24,7 @@ const int mn = 200005;
 const int mod = 1000000007;
 const long long inf = 4444444444444444444;
 const int sminf = 1111111111;
-const bool is_multitest = 0;
+const bool is_multitest = 1;
 const bool is_interactive = 0;
 
 // i/o methods:
@@ -58,14 +58,64 @@ void preprocess()
 }
 
 // global variables:
-int n;
+int n, m;
+vector <int> linkedList[mn];
+vector <pair <pii, int> > edges;
 // main solution goes here:
 void execute(int test_number)
 {
-  cin >> n;
-  for (int i=0; i<=n; i++) {
-    cout << i << "\n";
+  cin >> n >> m;
+  int u, v, w;
+  for (int i = 0; i < m; i++) {
+    cin >> u >> v >> w;
+
+    linkedList[u].push_back(v);
+    linkedList[v].push_back(u);
+    edges.push_back({{u, v}, w});
   }
+
+  vector <int> distTo1(n + 1, -1), distToN(n + 1, -1);
+  distTo1[1] = 0;
+  deque <int> bfsQueue = {1};
+  while (!bfsQueue.empty()) {
+    int u = bfsQueue.front();
+    bfsQueue.pop_front();
+
+    for (int v: linkedList[u]) {
+      if (distTo1[v] == -1) {
+        distTo1[v] = distTo1[u] + 1;
+        bfsQueue.push_back(v);
+      }
+    }
+  }
+
+  distToN[n] = 0;
+  bfsQueue = {n};
+  while (!bfsQueue.empty()) {
+    int u = bfsQueue.front();
+    bfsQueue.pop_front();
+
+    for (int v: linkedList[u]) {
+      if (distToN[v] == -1) {
+        distToN[v] = distToN[u] + 1;
+        bfsQueue.push_back(v);
+      }
+    }
+  }
+
+  ll ans = inf;
+  for (auto ed: edges) {
+    int u = ed.first.first, v = ed.first.second;
+    ll w = ed.second;
+    ll dist = min(distTo1[u] + distToN[v], distTo1[v] + distToN[u]) + 1;
+    ans = min(ans, w * dist);
+  }
+
+  cout << ans << "\n";
+
+  // clearance
+  edges.clear();
+  for (int i = 1; i <= n; i++) linkedList[i].clear();
 }
 // REMEMBER TO CHOOSE TEST METHODS
 // PLEASE REMOVE cout AND cerr DEBUG LINES BEFORE SUBMITTING PROBLEMS

@@ -16,8 +16,22 @@ using namespace std;
 /** Extend testlib.h here **/
 /**/
 
+const int MAX_N = 1'000'000;
+
 int main(int argc, char* argv[])
 {
   registerGen(argc, argv, 0);
-  int n = atoi(argv[1]);
+  int totalN = opt<int>("N");
+  int w = opt<int>("W");
+
+  vector <int> cases;
+  while (totalN > 0 && cases.size() < 1000) {
+    int n = rnd.wnext(totalN, w) + 1;
+    totalN -= n;
+    cases.push_back(n);
+  }
+
+  shuffle(cases.begin(), cases.end());
+  cout << cases.size() << "\n";
+  for (int i: cases) cout << i << "\n";
 }

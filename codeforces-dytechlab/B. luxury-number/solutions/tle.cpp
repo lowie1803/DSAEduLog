@@ -58,8 +58,6 @@ void preprocess()
 }
 
 // global variables:
-ll l, r;
-
 ll bs_sqrt(ll x) {
   ll left = 0, right = 2'000'000'123;
   while (right > left) {
@@ -71,24 +69,18 @@ ll bs_sqrt(ll x) {
   return left - 1;
 }
 
+bool check_luxury(ll a) {
+  ll x = bs_sqrt(a);
+  return (a % x == 0);
+}
+
 // main solution goes here:
 void execute(int test_number)
 {
-  cin >> l >> r;
-  ll sql = bs_sqrt(l), sqr = bs_sqrt(r);
-  ll ans;
-  if (sql == sqr) {
-    ans = 0;
-    for (int i = 0; i < 3; i++) {
-      if (l <= sql * (sql + i) && sql * (sql + i) <= r) ans++;
-    }
-  } else {
-    ans = (sqr - sql - 1) * 3;
-    for (int i = 0; i < 3; i++) {
-      if (l <= sql * (sql + i) && sql * (sql + i) <= r) ans++;
-      if (l <= sqr * (sqr + i) && sqr * (sqr + i) <= r) ans++;
-    }
-  }
+  ll l, r;
+  cin>>l>>r;
+  ll ans = 0;
+  for (ll i = l; i <= r; i++) if (check_luxury(i)) ans++;
   cout << ans << "\n";
 }
 // REMEMBER TO CHOOSE TEST METHODS

@@ -36,18 +36,17 @@ vector <int> coordinateLPieces(int x, int y, int mode) {
   return res;
 }
 
-const int N_MIN = 4;
+const int N_MAX = 100'000;
 
 int main(int argc, char* argv[])
 {
   registerGen(argc, argv, 0);
-  int testCount = atoi(argv[1]);
-  int nMax = atoi(argv[2]);
-  int cornerFreq = atoi(argv[3]); // corners will appear in testCount / argv[3] cases
+  int testCount = opt<int>("T");
+  int cornerFreq = opt<int>("CFreq"); // corners will appear in testCount / argv[3] cases
 
   cout << testCount << "\n";
   for (int test = 1; test <= testCount; test++) {
-    int n = rnd.next(N_MIN, nMax);
+    int n = N_MAX;
 
     int cornerCase = rnd.next(cornerFreq);
     vector <int> pieces;

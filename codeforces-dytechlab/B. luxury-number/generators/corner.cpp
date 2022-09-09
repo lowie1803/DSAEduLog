@@ -1,6 +1,7 @@
 #include "testlib.h"
 #include <bits/stdc++.h>
 using namespace std;
+#define ll long long
 
 /*
 *  rnd.next(4) - Random int bw 0-3
@@ -16,30 +17,18 @@ using namespace std;
 /** Extend testlib.h here **/
 /**/
 
-const int STRING_LEN_LIMIT = 100'000;
-
-
 int main(int argc, char* argv[])
 {
   registerGen(argc, argv, 0);
-  int numberOfTests = atoi(argv[1]);
-  string letterUsed = argv[2];
-  int totalChar = atoi(argv[3]);
-
-  vector <string> tests;
-  int strlen;
-  string str;
-  int remainingChar = totalChar;
-  for (int i = numberOfTests; i > 0; i--) {
-    strlen = (i == 1 ? remainingChar : (rnd.wnext(totalChar / numberOfTests / 2, totalChar / numberOfTests * 2, -4)));
-    strlen = min(strlen, STRING_LEN_LIMIT);
-    remainingChar -= strlen;
-    str = "";
-    for (int j = 0; j < strlen; j++) str += rnd.any(letterUsed);
-    tests.push_back(str);
+  int testCount = opt<long long>("T");
+  ll maxLimit = opt<long long>("MAXLR");
+  int wnextIndicator = opt<int>("WNEXT");
+  cout << testCount << "\n";
+  for (int i = 0; i < testCount; i++) {
+    ll sqrtMax = sqrt(maxLimit);
+    ll sqrtlr = rnd.wnext(1ll, sqrtMax, wnextIndicator);
+    ll l = rnd.next(sqrtlr * sqrtlr, (sqrtlr + 1) * (sqrtlr + 1) - 1);
+    ll r = rnd.next(l, (sqrtlr + 1) * (sqrtlr + 1) - 1);
+    cout << l << " " << r << "\n";
   }
-
-  shuffle(tests.begin(), tests.end());
-  cout << numberOfTests << "\n";
-  for (string s: tests) cout << s << "\n";
 }

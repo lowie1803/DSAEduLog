@@ -58,38 +58,69 @@ void preprocess()
 }
 
 // global variables:
-ll l, r;
+int n;
+int passed[15][15][15][15][15][15];
+bool is_positions_passed(vector <pii> pts, int test_number) {
+  return passed[pts[0].XX][pts[0].YY][pts[1].XX][pts[1].YY][pts[2].XX][pts[2].YY] == test_number;
+}
 
-ll bs_sqrt(ll x) {
-  ll left = 0, right = 2'000'000'123;
-  while (right > left) {
-      ll mid = (left + right) / 2;
-      
-      if (mid * mid > x) right = mid;
-      else left = mid + 1;
-  }
-  return left - 1;
+void pass_positions(vector <pii> pts, int test_number) {
+  passed[pts[0].XX][pts[0].YY][pts[1].XX][pts[1].YY][pts[2].XX][pts[2].YY] = test_number;
+}
+
+bool in_range(pii p) {
+  return (p.XX > 0 && p.XX <= n && p.YY > 0 && p.YY <= n);
+}
+
+bool shared_pt(pii u, pii v) {
+  return u != v && abs(u.XX - v.XX) <= 1 && abs(u.YY - v.YY) <= 1;
+}
+
+pii skipCell(pii u, pii v) {
+  return {2 * v.XX - u.XX, 2 * v.YY - u.YY};
 }
 
 // main solution goes here:
 void execute(int test_number)
 {
-  cin >> l >> r;
-  ll sql = bs_sqrt(l), sqr = bs_sqrt(r);
-  ll ans;
-  if (sql == sqr) {
-    ans = 0;
-    for (int i = 0; i < 3; i++) {
-      if (l <= sql * (sql + i) && sql * (sql + i) <= r) ans++;
+  cin >> n;
+  vector <pii> pts(3, {0, 0});
+  for (int i = 0; i < 3; i++) cin >> pts[i].XX >> pts[i].YY;
+  pii target;
+  cin >> target.XX >> target.YY;
+  deque <vector <pii> > q = {pts};
+  while (!q.empty()) {
+    vector <pii> positions = q.front();
+    q.pop_front();
+
+    for (int i = 0; i < 3; i++) if (target == positions[i]) {
+      cout << "YES\n";
+      return;
     }
-  } else {
-    ans = (sqr - sql - 1) * 3;
+
     for (int i = 0; i < 3; i++) {
-      if (l <= sql * (sql + i) && sql * (sql + i) <= r) ans++;
-      if (l <= sqr * (sqr + i) && sqr * (sqr + i) <= r) ans++;
+      for (int j = i + 1; j < 3; j++) {
+        if (!shared_pt(positions[i], positions[j])) continue;
+
+        pii temp = positions[i];
+        positions[i] = skipCell(positions[i], positions[j]);
+        if (in_range(positions[i]) && !is_positions_passed(positions, test_number)) {
+          pass_positions(positions, test_number);
+          q.push_back(positions);
+        }
+        positions[i] = temp;
+
+        temp = positions[j];
+        positions[j] = skipCell(positions[j], positions[i]);
+        if (in_range(positions[j]) && !is_positions_passed(positions, test_number)) {
+          pass_positions(positions, test_number);
+          q.push_back(positions);
+        }
+        positions[j] = temp;
+      }
     }
   }
-  cout << ans << "\n";
+  cout << "NO\n";
 }
 // REMEMBER TO CHOOSE TEST METHODS
 // PLEASE REMOVE cout AND cerr DEBUG LINES BEFORE SUBMITTING PROBLEMS

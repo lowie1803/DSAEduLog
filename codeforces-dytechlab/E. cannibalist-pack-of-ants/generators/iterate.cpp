@@ -16,30 +16,23 @@ using namespace std;
 /** Extend testlib.h here **/
 /**/
 
-const int STRING_LEN_LIMIT = 100'000;
-
+const int MAX_N = 1'000'000;
 
 int main(int argc, char* argv[])
 {
   registerGen(argc, argv, 0);
-  int numberOfTests = atoi(argv[1]);
-  string letterUsed = argv[2];
-  int totalChar = atoi(argv[3]);
+  int l = opt<int>("l");
+  int r = opt<int>("r");
 
-  vector <string> tests;
-  int strlen;
-  string str;
-  int remainingChar = totalChar;
-  for (int i = numberOfTests; i > 0; i--) {
-    strlen = (i == 1 ? remainingChar : (rnd.wnext(totalChar / numberOfTests / 2, totalChar / numberOfTests * 2, -4)));
-    strlen = min(strlen, STRING_LEN_LIMIT);
-    remainingChar -= strlen;
-    str = "";
-    for (int j = 0; j < strlen; j++) str += rnd.any(letterUsed);
-    tests.push_back(str);
+  vector <int> cases;
+  int sumN = 0;
+  for (int i = l; i <= r; i++) {
+    if (sumN + i > MAX_N) break;
+    sumN += i;
+    cases.push_back(i);
   }
 
-  shuffle(tests.begin(), tests.end());
-  cout << numberOfTests << "\n";
-  for (string s: tests) cout << s << "\n";
+  shuffle(cases.begin(), cases.end());
+  cout << cases.size() << "\n";
+  for (int i: cases) cout << i << "\n";
 }
